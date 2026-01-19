@@ -1,0 +1,15 @@
+{
+  "name": "equi-score-scraper",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "next": "13.5.2",
+    "node-fetch": "^3.4.0"
+  }
+}
