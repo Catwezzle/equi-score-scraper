@@ -9,18 +9,25 @@ export default async function handler(req, res) {
     });
 
     const page = await browser.newPage();
-    await page.goto(url, { waitUntil: "networkidle" });
+    const response = await page.goto(url, { waitUntil: "networkidle" });
 
-    // Warte auf die Tabelle (falls sie etwas braucht)
-    await page.waitForSelector("table", { timeout: 10000 });
+    const status = response ? response.status() : "no response";
 
-    const html = await page.$eval("table", (el) => el.outerHTML);
+    // debug info
+    const title = await page.title();
+    const htmlLength = (await page.content()).length;
+
+    // try to find table
+    const hasTable = await page.$("table") !== null;
 
     await browser.close();
 
-    res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.status(200).send(html);
-
+    res.status(200).json({
+      status,
+      title,
+      htmlLength,
+      hasTable,
+    });
   } catch (err) {
     res.status(500).send("Server error: " + err.message);
   }
